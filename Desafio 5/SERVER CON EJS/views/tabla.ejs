@@ -1,0 +1,23 @@
+<%- include('./encabezado')-%>
+<% if(Prods.length > 0){ %>
+    <div class="table-responsive" style="width:100% ;">
+        <table class="table">
+            <thead>
+            <tr style="color: black;"> <th scope="col">Producto</th> <th scope="col">Precio</th> <th scope="col">Imagen</th> </tr>
+        </thead>
+        <tbody>
+            <%Prods.forEach(function(Prods) {%>
+            <tr>
+
+                <td><%=Prods.title%></td>
+                <td><%=Prods.price%></td>
+                <td><img src=<%=Prods.thumbnail%> width=100%></td>
+            </tr>
+            <%});%>
+            </tbody>
+        </table>
+    </div>
+<% } else{ %>
+    <h1 class="alert alert-danger">No se encontraron datos</h1>
+<% } %>
+<%- include('./pie')-%>

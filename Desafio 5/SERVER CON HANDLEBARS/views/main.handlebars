@@ -1,0 +1,28 @@
+<div>
+   {{#if Ingresar}}
+ {{>formulario}}
+   {{/if}}
+   <br>     
+</div>
+{{#if Mostrar}}
+{{#if Prods}}
+               <div class="table-responsive">
+        <table class="table" >
+            <thead> 
+               <th scope='col'>Producto</th> 
+               <th scope='col'>Precio</th> 
+               <th scope='col'>Imagen</th> 
+               </thead>
+              {{#each Prods}}
+                 <tbody>
+                <td key="Id">{{this.title}}</td>
+                <td>{{this.price}}</td>
+                <td style="width:40% ;"><img src={{this.thumbnail}} width= 10%></td>
+                {{/each}}
+                 </tbody>
+         </table>
+    </div>
+    {{else}}
+    <h1>No se encontraron productos</h1>
+{{/if}}
+     {{/if}}
