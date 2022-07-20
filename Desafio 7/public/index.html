@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <form>
+      <div class="form-group">
+        <label for="title"><b>Titulo</b></label>
+        <input id="title" class="form-control" type="text" name="title">
+      </div>
+
+      <div class="form-group">
+        <label for="price"><b>Precio</b></label>
+        <input id="price" class="form-control" type="num" name="price">
+      </div>
+
+      <div class="form-group">
+        <label for="thumbnail"><b>Imagen</b></label>
+        <input id="thumbnail" class="form-control" type="text" name="thumbnail">
+      </div>
+      <button class="btn btn-success mt-3 mb-5" onclick="addProduct()">Enviar</button>
+    </form>
+  </div>
+  <br>
+  <hr>
+  <div id="pruebaId"></div>
+  <div id="impresionTabla"></div>
+
+  <br>
+  <hr>
+  <h1>Cliente Websockets</h1>
+  <div id="datoos"></div>
+  <form onsubmit="return addMessage(this)">
+    <input type="text" id="autor" placeholder="Tu mail" />
+    <input type="text" id="texto" placeholder="Cuéntanos algo..." />
+    <input type="submit" value="Enviar" />
+  </form>
+  <hr><br>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io.connect();
+    //const { knexSqLite } = require("../SQLite3.js")
+
+    window.onload = async () => {
+      //window.alert("Prueba")
+      console.log("Prueba")
+    }
+
+
+    function addMessage(e) {
+
+      const fecha = new Date().toLocaleString();
+      const mensaje = {
+        date: fecha,
+        autor: document.getElementById("autor").value,
+        text: document.getElementById("texto").value,
+      };
+
+      socket.emit("nuevoMensaje", mensaje);
+      console.log(mensaje)
+      return false;
+    }
+    //Muestra los mensajes desde sqlite3
+    socket.on("mensajes", (envios) => {
+      console.log("Aca la carga en front mensaje", envios)
+      const html = envios.map((elem, index) => {
+        return `<div>
+            <b style="color:blue;">${elem.date}</b>:
+            <em style="color:brown;">${elem.autor}</em>
+            <i style="color:green;">${elem.text}<i> </div>`;
+      })
+        .join(" ");
+      document.getElementById("datoos").innerHTML = html
+    })
+
+
+
+    //Muestra tabla de productos desde la base de datos
+    socket.on("productos", async (productos) => {
+      const html = await productos.map((elem, index) => {
+        return `<div><table class="table table-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Foto</th>
+        </tr>
+        <tr>
+          <td>${elem.title}</td>:
+          <td>${elem.price}</td>
+          <td>${elem.thumbnail}<td> 
+            </table>
+            </div>`;
+      })
+        .join(" ");
+      document.getElementById("impresionTabla").innerHTML = html
+    })
+
+    //Igreso de un producto por formulario.
+    function addProduct(e) {
+      console.log(e)
+      const ingresar = {
+        title: document.getElementById("title").value,
+        price: document.getElementById("price").value,
+        thumbnail: document.getElementById("thumbnail").value,
+      };
+      console.log(ingresar)
+      socket.emit("ingresar", ingresar);
+      return false;
+    }
+  </script>
+</body>
+
+</html>
