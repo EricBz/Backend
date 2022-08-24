@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "chat": {
+      "1": {
+        "id": 1,
+        "mensajes": [
+          {
+            "autor": {
+              "id": "mail del usuario",
+              "nombre": "nombre del usuario",
+              "apellido": "apellido del usuario",
+              "edad": 99,
+              "alias": "alias del usuario",
+              "avatar": "url avatar foto logo del usuario"
+            },
+            "texto": "mensaje del usuario"
+          },
+          {
+            "autor": {
+              "id": "mail del usuario",
+              "nombre": "nombre del usuario",
+              "apellido": "apellido del usuario",
+              "edad": 99,
+              "alias": "alias del usuario",
+              "avatar": "url avatar foto logo del usuario"
+            },
+            "texto": "mensaje del usuario"
+          },
+          {
+            "autor": {
+              "id": "mail del usuario",
+              "nombre": "nombre del usuario",
+              "apellido": "apellido del usuario",
+              "edad": 99,
+              "alias": "alias del usuario",
+              "avatar": "url avatar foto logo del usuario"
+            },
+            "texto": "mensaje del usuario"
+          },
+          {
+            "autor": {
+              "id": "jonathansa@live.com",
+              "nombre": "yeyo",
+              "apellido": "BENITEZ",
+              "edad": 2,
+              "alias": "ert",
+              "avatar": ""
+            },
+            "texto": "holanda"
+          },
+          {
+            "autor": {
+              "id": "jonatnsa@live.com",
+              "nombre": "checho",
+              "apellido": "thompson",
+              "edad": "123",
+              "alias": "ert",
+              "avatar": ""
+            },
+            "texto": "hola"
+          }
+        ]
+      }
+    }
+  },
+  "result": 1
+}

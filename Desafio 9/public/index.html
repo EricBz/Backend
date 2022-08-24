@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="cargar()">
+    <h1>Prueba</h1>
+    <ul id="tabla"></ul>
+
+    <br>
+    <hr>
+    <div id="pruebaId"></div>
+    <div id="impresionTabla"></div>
+
+    <br>
+    <hr>
+    <h1>Cliente Websockets</h1>
+    <div id="datoos"></div>
+    <form onsubmit="return addMessage(this)">
+        <input type="text" id="mail" placeholder="Tu mail" />
+        <input type="text" id="alias" placeholder="Tu alias" />
+        <input type="text" id="nombre" placeholder="Tu nombre" />
+        <input type="text" id="apellido" placeholder="Tu apellido" />
+        <input type="number" id="edad" placeholder="Tu edad" />
+        <input type="text" id="texto" placeholder="Cuéntanos algo..." />
+        <input type="text" id="avatar" placeholder="Tu avatar" />
+        <input type="submit" value="Enviar" />
+    </form>
+    <hr><br>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.2/dist/normalizr.browser.min.js"></script>
+    <script>
+         const socket = io.connect();
+
+        const cargar = () => {
+            console.log("prueba")
+            fetch(`http://localhost:8080/api/productos-test`).then(response => response.json()).then(response => {
+                console.log(response)
+                let cargado = document.querySelector("#tabla")
+                response.map(resp => {
+                    console.log("dentro de map", resp)
+                    cargado.innerHTML = `<li>${resp.nombre}</li>`
+                })
+            })
+        }
+
+        function addMessage(e) {
+            const mensaje = {
+                autor: {
+                    id: document.getElementById("mail").value,
+                    nombre: document.getElementById("nombre").value,
+                    apellido: document.getElementById("apellido").value,
+                    edad: document.getElementById("edad").value,
+                    alias: document.getElementById("alias").value,
+                    avatar: document.getElementById("avatar").value
+                },
+                texto: document.getElementById("texto").value
+
+            };
+
+            socket.emit("nuevoMensaje", mensaje);
+            console.log(mensaje)
+            return false;
+        }
+
+        socket.on("mensajes", (envios) => {
+            console.log("Aca la carga en front mensaje", envios)
+            const html = envios.map((elem, index) => {
+                return `<div>
+            <b style="color:blue;">${elem.autor.nombre}</b>:
+            <em style="color:brown;">${elem.autor.apellido}</em>
+            <i style="color:green;">${elem.texto}<i> </div>`;
+            })
+                .join(" ");
+            document.getElementById("datoos").innerHTML = html
+        })
+
+    </script>
+</body>
+
+</html>
