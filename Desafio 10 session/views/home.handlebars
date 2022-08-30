@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col"></div>
+    <div class="col">
+        <button class="btn btn-success mt-3 mb-5" id="logoutbtn">Logout</button>
+        <h1 id="saludo">Bienvenido {{user.name}}</h1>
+    </div>
+    <div class="col"></div>
+</div>
+<script>
+    const btn = document.getElementById('logoutbtn')
+    btn.addEventListener('click', async evt => {
+        evt.preventDefault();
+        console.log("Boton logout activado")
+        fetch('/logout').then(json => console.log(json));
+        //Para que luego de 2 segs se cierre la sesion.
+        setTimeout(() => { return window.location.href = "/" }, 2000)
+    })
+
+</script>
