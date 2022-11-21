@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "title":"Nokia",
+        "price":123000,
+        "thumbnail":"Foto"
+    },
+    {
+        "id": 2,
+        "title":"PC",
+        "price":230400,
+        "thumbnail":"Foto"
+    }
+]
