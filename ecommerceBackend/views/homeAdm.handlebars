@@ -1,0 +1,56 @@
+
+<div class="contenedorAdm">
+    <button class="btn btn-danger mt-3 mb-5" id="ProdAdmbtn" onclick="retroceder()">Atras</button>
+    <h3>Sistema de ingreso de productos para Aministradores.</h3>
+    <div class="row">
+    <div class="col"></div>
+<div class="jumbotron col p-5">
+    <form id="registerForm" enctype="multipart/form-data">
+        <div class="form-group mb-3">
+            <label class="form-label">Nombre del producto</label>
+            <input class="form-control" name="title" id="title" required>
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label">Precio</label>
+            <input name="price" class="form-control" id="price" required>
+        </div>
+         <div class="form-group mb-3">
+            <label class="form-label">Enlace de imagen del producto</label>
+            <input class="form-control" name="thumbnail" id="thumbnail" required>
+        </div>
+      <!--  <input  class="btn btn-success mt-3 mb-5" type="submit">-->
+      <button class="btn btn-success mt-3 mb-5" onclick="enviarProducto()">enviar</button>
+    </form>
+</div> 
+<div class="col"></div>
+</div>
+
+</div>
+<script>
+      function retroceder() {
+                return window.location.href = "/home"
+        }
+
+      const enviarProducto = async () => {
+                let url = "http://localhost:8080/api/productos"
+                
+                let data = {
+                        title: document.getElementById("title").value,
+                        price: document.getElementById("price").value,
+                        thumbnail: document.getElementById("thumbnail").value
+                      
+                }
+                fetch(url, {
+                        method: 'POST',
+                        body: JSON.stringify(await data),
+                        headers: {
+                                'Content-Type': 'application/json'
+                        }
+                }).then(res => res.json())  
+                        .then(response => {
+                                     console.log('Success:', response)
+                           retroceder()
+                        })
+                        .catch(error => console.error('Error:', error));
+        }  
+</script>

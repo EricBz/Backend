@@ -1,0 +1,143 @@
+<div class="row">
+        <div class="col">
+                <button class="btn btn-danger mt-3 mb-5" id="ProdAdmbtn" onclick="admprod()">Ingreso de productos /
+                        Adm</button>
+
+        </div>
+        <div class="col">
+                <div class="contenedorBtn">
+
+                </div>
+                <h1 id="saludo">Bienvenido {{user.name}}</h1>
+                <img src="{{user.avatar}}" width="200px" />
+                <!-- <a href={{user.avatar}} target="_blank">Imagen</a>-->
+                <p>Email: {{user.email}}</p>
+                <p>Edad: {{user.edad}}</p>
+                <p>Teléfono: {{user.telefono}}</p>
+                <p>Dirección: {{user.direccion}}</p>
+        </div>
+        <div class="col">
+                <button class="btn btn-success mt-3 mb-5" id="logoutbtn">Logout</button>
+        </div>
+</div>
+<div id="productsContainer">
+
+</div>
+<div class="contenedorCarritosTitulo">
+        <h2>Carrito de compras</h2>
+        <div id="carritoContainer">
+
+        </div>
+        <div id="admContenedor"></div>
+
+</div>
+<script>
+        const btn = document.getElementById('logoutbtn')
+        btn.addEventListener('click', async evt => {
+                evt.preventDefault();
+                console.log("Boton logout activado")
+                fetch('/logout').then(json => console.log(json));
+                //Para que luego de 2 segs se cierre la sesion.
+                setTimeout(() => { return window.location.href = "/" }, 2000)
+        })
+
+        function admprod() {
+                return window.location.href = "/ingresoproductos"
+        }
+
+
+        let carrito = []
+        let producto = {}
+
+
+        const vaciarCarrito = () => {
+                const contenedorCarritoActualizado = document.querySelector("#carritoContainer")
+                carrito = []
+                contenedorCarritoActualizado.innerHTML = ""
+        }
+
+        const datosUser = () => {
+                return fetch("http://localhost:8080/user").then(response => response.json()).then(response => {
+                        //console.log(response.email)
+                        return response
+                })
+        }
+
+        const enviarPostCarrito = async () => {
+                let url = "http://localhost:8080/api/carrito"
+                let prods = carrito
+                let usuario = await datosUser()
+
+                let data = {
+                        timestap: Date.now(),
+                        email: usuario.email,
+                        idUsuario: usuario.id,
+                        productos: prods
+                }
+                fetch(url, {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                                'Content-Type': 'application/json'
+                        }
+                }).then(res => res.json())
+                        .catch(error => console.error('Error:', error))
+                        .then(response => {
+                                window.location.href = "/compraRealizadaExitosamente"
+                                console.log('Success:', response)
+                        });
+        }
+
+        const agregar = async (id) => {
+                fetch(`http://localhost:8080/api/productos/${id}`).then(response => response.json()).then(data => {
+                        data = agregarProducto(data, id)
+                })
+                console.log("prueba tomada", await id)
+        }
+
+        const eliminarProducto = (id) => {
+                const contenedorCarritoActualizado = document.querySelector("#carritoContainer")
+                let idFiltrar = id
+                let seleccionado = carrito.find((item) => item._id === idFiltrar)
+                let indice = carrito.indexOf(seleccionado)
+                carrito.splice(indice, 1)
+                console.log(seleccionado, indice, carrito)
+                contenedorCarritoActualizado.innerHTML = carrito.map(producto =>
+                        `
+                        <p>${producto.title} ${producto.price}</p>
+                        <button onclick="eliminarProducto('${producto._id}')">Eliminar</button>`
+                ) +
+                        `<button onclick="enviarPostCarrito('${carrito}')">Confirmar compra</button>
+                         <button onclick="vaciarCarrito()">Vaciar Carrito</button>
+                        `
+        }
+        const agregarProducto = (data, id) => {
+                producto = data[0]
+
+                carrito.push(producto)
+
+                const mostrarCarrito = document.querySelector("#carritoContainer")
+                mostrarCarrito.innerHTML = carrito.map(producto =>
+                        `<p>${producto.title} ${producto.price}</p>` +
+                        `<button onclick="eliminarProducto('${producto._id}')">Eliminar</button>`
+                ) +
+                        `<button onclick="enviarPostCarrito('${carrito}')">Confirmar compra</button>
+                        <button onclick="vaciarCarrito()">Vaciar Carrito</button>
+                        `
+        }
+
+        fetch('http://localhost:8080/api/productos').then(response => response.json()).then(data => {
+                const encontrado = document.querySelector("#productsContainer")
+                //let id = document.querySelector(".idprod")
+                encontrado.innerHTML = data.map(data => `
+                <div class="tarjeta">
+                <p>${data.title}</p>  
+                <p>${data.price} $</p>      
+                <img width=250px src=${data.thumbnail}/>        
+                <button onclick="agregar('${data._id}')">Agregar</button>
+                </div>
+        `)
+        });
+
+
+</script>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<div class="contenedorPadreCompraRealizada">
+<div class="contenedorCompraRealizada">
+<h1>Compra realizada exitosamente!!!</h1>
+<h3>Datos de envio:</h3>
+<p>Nombre: {{user.name}}</p>
+<p>Email de contacto: {{user.email}}</p>
+<p>Dirección: {{user.direccion}}</p>
+<p>Teléfono: {{user.telefono}}</p>
+</div>
+</div>
+<script>
+    setTimeout(() => { return window.location.href = "/home" }, 2000)
+</script>

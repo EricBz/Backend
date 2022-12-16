@@ -1,0 +1,50 @@
+.bodyFondo {
+    background-image: url(./fondo.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover; }
+
+#productsContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.tarjeta {
+    width: 350px;
+    background-color: aqua;
+    border: solid 1px blue;
+    border-radius: 10px;
+}
+
+.contenedorCarritosTitulo {
+    margin-bottom: 100px;
+    margin-top: 50px;
+    text-align: center;
+    color: azure;
+    border: solid 2px white;
+    border-radius: 5px;
+}
+
+.contenedorAdm {
+    text-align: center;
+}
+
+.contenedorBtn {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.contenedorCompraRealizada {
+    color: azure;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.322);
+}
+
+.contenedorPadreCompraRealizada {
+    text-align: center;
+}
